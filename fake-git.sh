@@ -31,8 +31,9 @@ case "$*" in
 		intRegex='0|[1-9][0-9]*'
 		identifierRegex='[0-9A-Za-z-]+' # TODO if one of these is purely numeric, it needs to not have leading zeros ("intRegex" above, but binding for anything that's numeric-only)
 		preReleaseRegex="($identifierRegex)([.]($identifierRegex))*"
-		# TODO buildRegex='[0-9A-Za-z-]+([.][0-9A-Za-z-]+)*' # (we can't accept +BUILD because Go rejects the semver if we do)
-		semverRegex="($intRegex)([.]($intRegex)([.]($intRegex)(-($preReleaseRegex))?)?)?"
+		# buildRegex='[0-9A-Za-z-]+([.][0-9A-Za-z-]+)*' # (we can't accept +BUILD because Go rejects the semver if we do)
+		# we also cannot let ".MINOR.PATCH" be optional or Go *also* rejects the semver
+		semverRegex="($intRegex)[.]($intRegex)[.]($intRegex)(-($preReleaseRegex))?"
 		if ! grep <<<"$FAKEGIT_GO_SEMVER" -qE "^v($semverRegex)$"; then
 			printf >&2 'error: invalid (Go) semver: %q\n  ("vMAJOR[.MINOR[.PATCH[-PRERELEASE][+BUILD]]]" but not +BUILD)\n' "$FAKEGIT_GO_SEMVER"
 			exit 1
