@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: 0 0 * * 0
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+jobs:
+  go:
+    strategy:
+      matrix:
+        go:
+          # 1.24+ (and any specific patch releases just before logic/invocation changes)
+          - 1.25
+          - 1.24
+          # TODO tip?
+      fail-fast: false
+    name: 'Go ${{ matrix.go }}'
+    runs-on: ubuntu-latest
+    env:
+      GO_VERSION: '${{ matrix.go }}'
+      DOCKER_BUILDKIT: '0'
+    steps:
+      - uses: actions/checkout@v5
+      - name: Test
+        run: |
+          docker build --pull . --file Dockerfile.test --build-arg GO_VERSION="$GO_VERSION"
