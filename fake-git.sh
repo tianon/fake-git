@@ -60,6 +60,14 @@ case "$*" in
 		exit 0
 		;;
 
+	# Go 1.25+
+	# https://github.com/golang/go/commit/76f63ee890170f4884f4d213e8150d39d6758ad3
+	# https://github.com/golang/go/blob/9d0829963ccab19093c37f21cfc35d019addc78a/src/cmd/go/internal/modfetch/codehost/git.go#L391
+	# for https://github.com/golang/go/blob/9d0829963ccab19093c37f21cfc35d019addc78a/src/cmd/go/internal/modfetch/codehost/git.go#L397-L414
+	'config extensions.objectformat')
+		exit 0
+		;;
+
 	# https://github.com/golang/go/blob/608acff8479640b00c85371d91280b64f5ec9594/src/cmd/go/internal/modfetch/codehost/git.go#L153
 	# via https://github.com/golang/go/blob/608acff8479640b00c85371d91280b64f5ec9594/src/cmd/go/internal/modfetch/codehost/git.go#L400-L414
 	'tag -l')
