@@ -7,7 +7,9 @@ Well, if you've got an alternate way to get what the version number should be (e
 Install `fake-git.sh` as `git` in `PATH` before your real `git` binary (or instead of installing `git`), make sure `.git` exists (as a directory specifically, even if empty), and set the following environment variables before invoking `go build -buildvcs=true` (or `=auto`):
 
 - `FAKEGIT_GO_SEMVER`  
-  the actual semantic version number you want embedded in the build metadata; must match [Go's `vMAJOR[.MINOR[.PATCH[-PRERELEASE][+BUILD]]]`](https://pkg.go.dev/golang.org/x/mod/semver), but importantly without `+BUILD` (as Go won't accept build numbers in Git tags)
+  the actual semantic version number you want embedded in the build metadata; must match [Go's `vMAJOR[.MINOR[.PATCH[-PRERELEASE][+BUILD]]]`](https://pkg.go.dev/golang.org/x/mod/semver)  
+  additionally, Go tends to be even pickier about this for VCS metadata, and insists there be no `+BUILD` (which is sane) and *also* that the version include all three of `MAJOR`, `MINOR`, and `PATCH` explicitly  
+  (if you see Go invoking `git for-each-ref`, you've probably got a bad semver that Go doesn't like)
 
 - `FAKEGIT_GO_REVISION` (optional)  
   defaults to `FAKEGIT_GO_SEMVER`; controls `vcs.revision`
