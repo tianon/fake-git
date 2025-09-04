@@ -25,3 +25,27 @@ See [`Dockerfile.test` in this repository](Dockerfile.test) for a full working e
 ## Caveat
 
 The most important caveat here is that this is all *really* hacky, and prone to breakage at any/every turn.  The Go project's implementation has been reasonably stable, but they could completely change how they implement this at any time and fully break this project (and I obviously cannot control that).
+
+## Example
+
+```console
+$ go version -m ./faked
+./faked: go1.25.1
+	path	github.com/tianon/fake-git/test-go
+	mod	github.com/tianon/fake-git/test-go	v1.2.3-4.5.6.7.8.9.0	
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	DefaultGODEBUG=containermaxprocs=0,decoratemappings=0,tlssha1=1,updatemaxprocs=0,x509sha256skid=0
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=1.2.3.4.5.6.7.8.9.0
+	build	vcs.time=2009-02-13T23:31:30Z
+	build	vcs.modified=false
+```
