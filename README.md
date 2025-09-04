@@ -21,3 +21,7 @@ Install `fake-git.sh` as `git` in `PATH` before your real `git` binary (or inste
 After setting those, you can use `git --fake` to verify that they're probably correct and will likely work (and that you've properly shadowed/provided `git` in `PATH`).
 
 See [`Dockerfile.test` in this repository](Dockerfile.test) for a full working example (that also tests/verifies the result).
+
+## Caveat
+
+The most important caveat here is that this is all *really* hacky, and prone to breakage at any/every turn.  The Go project's implementation has been reasonably stable, but they could completely change how they implement this at any time and fully break this project (and I obviously cannot control that).
