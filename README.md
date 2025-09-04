@@ -4,7 +4,7 @@ Ever done `go build` inside a `Dockerfile` with `.git` appropriately in `.docker
 
 Well, if you've got an alternate way to get what the version number should be (embedded in a file, in the code, an environment variable / `Dockerfile` build `ARG`, etc), this might be the project for you!
 
-Install `fake-git.sh` as `git` in `PATH` before your real `git` binary (or instead of installing `git`), and set the following environment variables before invoking `go build -buildvcs=true` (or `=auto`):
+Install `fake-git.sh` as `git` in `PATH` before your real `git` binary (or instead of installing `git`), make sure `.git` exists (as a directory specifically, even if empty), and set the following environment variables before invoking `go build -buildvcs=true` (or `=auto`):
 
 - `FAKEGIT_GO_SEMVER`  
   the actual semantic version number you want embedded in the build metadata; must match [Go's `vMAJOR[.MINOR[.PATCH[-PRERELEASE][+BUILD]]]`](https://pkg.go.dev/golang.org/x/mod/semver), but importantly without `+BUILD` (as Go won't accept build numbers in Git tags)
