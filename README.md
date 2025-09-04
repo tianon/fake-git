@@ -13,10 +13,10 @@ Install `fake-git.sh` as `git` in `PATH` before your real `git` binary (or inste
   defaults to `FAKEGIT_GO_SEMVER`; controls `vcs.revision`
 
 - `FAKEGIT_GO_TIMESTAMP` (optional)  
-  defaults to `0`; controls `vcs.time`
+  defaults to `0`; controls `vcs.time` and must be a Unix timestamp (ie, seconds since `1970-01-01T00:00:00Z`)
 
 - `FAKEGIT_GO_MODIFIED` (optional)  
-  defaults to `""`; controls `vcs.modified`, set to non-empty to set the modified flag
+  defaults to `""`; controls `vcs.modified`, set to non-empty to set to `true`
 
 After setting those, you can use `git --fake` to verify that they're probably correct and will likely work (and that you've properly shadowed/provided `git` in `PATH`).
 
