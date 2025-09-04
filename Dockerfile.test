@@ -1,0 +1,40 @@
+ARG GO_VERSION=latest
+FROM golang:$GO_VERSION
+
+WORKDIR /path/to/some/go
+
+# TODO I wanted +fake on here but Go rejects the semver if it has +BUILD
+ENV FAKEGIT_GO_SEMVER v1.2.3-4.5.6.7.8.9.0
+ENV FAKEGIT_GO_REVISION 1.2.3.4.5.6.7.8.9.0
+ENV FAKEGIT_GO_TIMESTAMP 1234567890
+
+COPY fake-git.sh /usr/local/bin/git
+RUN git --fake
+
+RUN mkdir -p .git # 🙃 ("touch .git" should be enough here, but Go insists it be a directory even though Git worktrees are a thing and have ".git" as a file)
+
+COPY test-go/ ./
+
+RUN go build -buildvcs=true -o faked .
+RUN set -eux; \
+	go version -m ./faked | tee go-version.txt; \
+	time="$(date --utc --date "@$FAKEGIT_GO_TIMESTAMP" '+%Y-%m-%dT%H:%M:%SZ')"; \
+	{ \
+		printf '%s\n' "$FAKEGIT_GO_SEMVER"; \
+		printf 'vcs = "git"\n'; \
+		printf 'vcs.revision = "%s"\n' "$FAKEGIT_GO_REVISION"; \
+		printf 'vcs.time = "%s"\n' "$time"; \
+		printf 'vcs.modified = "false"\n'; \
+	} | tee expected.txt; \
+	./faked | tee actual.txt; \
+	diff -u expected.txt actual.txt; \
+	tab="$(printf '\t')"; \
+	for string in \
+		"${tab}${FAKEGIT_GO_SEMVER}" \
+		"${tab}vcs=git" \
+		"${tab}vcs.revision=${FAKEGIT_GO_REVISION}" \
+		"${tab}vcs.time=${time}" \
+		"${tab}vcs.modified=false" \
+	; do \
+		grep -F "$string" go-version.txt; \
+	done
