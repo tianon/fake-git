@@ -19,7 +19,8 @@ jobs:
           # 1.24+ (and any specific patch releases just before logic/invocation changes)
           - 1.25
           - 1.24
-          # TODO tip?
+          # also test tip (via "golang:tip", so ~weekly snapshots)
+          - tip
       fail-fast: false
     name: 'Go ${{ matrix.go }}'
     runs-on: ubuntu-latest
