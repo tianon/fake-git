@@ -16,7 +16,13 @@ set -Eeuo pipefail
 # TODO add explicit debugging flag?
 #printf 'DEBUG: %s\n' "$*" >> "/proc/$PPID/fd/2"
 
-case "$*" in
+args="$*"
+
+# handle https://github.com/golang/go/commit/29f3f72dbd67c25033df944c8ced91e0efd46851 / "--end-of-options"
+# we aren't actually doing a "real" thing and mostly just look at the shape of our input anyways, so stripping that added flag entirely should be ~fine
+args="${args// --end-of-options / }"
+
+case "$args" in
 	# our own flag to pre-verify all the inputs, proper "git" override, etc.
 	# use via "git --fake" after installing the script into PATH and setting the above variables
 	'--fake' | '--help')
@@ -93,7 +99,7 @@ esac
 
 wip="$(
 	printf 'ERROR: UNIMPLEMENTED "git" command invoked:\n'
-	printf '  $*: %s\n' "$*"
+	printf '  $*: %s\n' "$args"
 	printf '  $@:'
 	printf ' %q' "$@"
 	printf '\n'
