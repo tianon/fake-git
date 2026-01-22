@@ -16,9 +16,12 @@ jobs:
     strategy:
       matrix:
         go:
-          # 1.24+ (and any specific patch releases just before logic/invocation changes)
+          # test 1.24+
           - 1.25
           - 1.24
+          # and any specific patch releases just before logic/invocation changes
+          - 1.26rc2 # https://github.com/golang/go/commit/29f3f72dbd67c25033df944c8ced91e0efd46851
+          - 1.25.5 # https://github.com/golang/go/commit/082365aa552a7e2186f79110d5311dce70749cc0
           # also test tip (via "golang:tip", so ~weekly snapshots)
           - tip
       fail-fast: false
