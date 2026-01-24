@@ -11,7 +11,8 @@ ENV FAKEGIT_GO_TIMESTAMP 1234567890
 COPY fake-git.sh /usr/local/bin/git
 RUN git --fake
 
-RUN mkdir -p .git # 🙃 ("touch .git" should be enough here, but Go insists it be a directory even though Git worktrees are a thing and have ".git" as a file)
+# this could also be a file, but doing so needs new enough Go (https://github.com/golang/go/commit/d774ced6a97d3e354d92e874861fb24d7527e3cb) and the file to be a valid-looking "Git worktree" file pointing at a real directory somewhere else (https://github.com/golang/go/blob/d774ced6a97d3e354d92e874861fb24d7527e3cb/src/cmd/go/internal/vcs/vcs.go#L677-L698)
+RUN mkdir -p .git
 
 COPY test-go/ ./
 
