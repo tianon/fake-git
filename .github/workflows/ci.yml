@@ -17,6 +17,7 @@ jobs:
       matrix:
         go:
           # test 1.24+
+          - 1.26-rc
           - 1.25
           - 1.24
           # and any specific patch releases just before logic/invocation changes
