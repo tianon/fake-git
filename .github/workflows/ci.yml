@@ -32,7 +32,7 @@ jobs:
       GO_VERSION: '${{ matrix.go }}'
       DOCKER_BUILDKIT: '0'
     steps:
-      - uses: actions/checkout@v5
+      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
       - name: Test
         run: |
           docker build --pull . --file Dockerfile.test --build-arg GO_VERSION="$GO_VERSION"
